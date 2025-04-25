@@ -32,13 +32,47 @@ public class SistemaApicola {
 }
 
     public static void asignarAbejaReina() {
-        // TODO: Mostrar lista de colmenas sin reina
-        // TODO: Permitir elegir colmena
-        // TODO: Pedir datos de la abeja reina (nombre, edad, etc.)
-        // TODO: Validar datos
-        // TODO: Asignar la abeja reina a la colmena seleccionada
-        // TODO: Confirmar asignación
+    System.out.println("ASIGNACIÓN DE ABEJA REINA");
+
+    List<Colmena> colmenasSinReina = datosApicola.obtenerColmenasSinReina();
+
+    if (colmenasSinReina.isEmpty()) {
+        System.out.println("❌ No hay colmenas disponibles sin abeja reina.");
+        return;
     }
+
+    // Mostrar las colmenas sin reina
+    System.out.println("Colmenas disponibles:");
+    for (int i = 0; i < colmenasSinReina.size(); i++) {
+        System.out.println((i + 1) + ". " + colmenasSinReina.get(i).descripcionCorta());
+    }
+
+    try {
+        int opcion = Integer.parseInt(Utils.solicitarCampo("Seleccione el número de la colmena a asignar la abeja reina: "));
+        if (opcion < 1 || opcion > colmenasSinReina.size()) {
+            System.out.println("❌ Opción no válida.");
+            return;
+        }
+
+        Colmena colmenaSeleccionada = colmenasSinReina.get(opcion - 1);
+
+        // Pedir datos de la abeja reina
+        String nombre = Utils.solicitarCampo("Ingrese el nombre de la abeja reina: ");
+        int edad = Integer.parseInt(Utils.solicitarCampo("Ingrese la edad (en días) de la abeja reina: "));
+        String origen = Utils.solicitarCampo("Ingrese el origen de la abeja reina: ");
+
+        // Crear objeto AbejaReina
+        AbejaReina reina = new AbejaReina(nombre, edad, origen);
+
+        // Asignar a la colmena
+        colmenaSeleccionada.asignarAbejaReina(reina);
+
+        System.out.println("✅ Abeja reina asignada correctamente a la colmena.");
+    } catch (Exception e) {
+        System.out.println("❌ Error al asignar la abeja reina: " + e.getMessage());
+    }
+}
+
 
     public static void mostrarInformacion() {
         // TODO: Mostrar submenú con tipos de información a mostrar
